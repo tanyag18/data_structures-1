@@ -1,43 +1,44 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void binarySearch();
- 
-int main(void)
-{
-   int i, first, last, middle, n, search, array[100];
- 
-   printf("Enter number of elements\n");
-   scanf("%d",&n);
- 
-   printf("Enter %d integers in ascending order\n", n);  //array needs to be sorted
- 
-   for (i = 0; i < n; i++)
-      scanf("%d",&array[i]);
- 
-   printf("Enter value to find\n");
-   scanf("%d", &search);
- 
-   first = 0;
-   last = n - 1;
-   middle = (first+last)/2;
+int binarySearch();
 
-   binarySearch(array,first,last,middle,search);
 
-   return 0;
+int main(int argc, const char *argv[])
+{	
+	int array[argc-2];
+	int i;
+	for(i=0;i<argc-2;i++)
+	{
+		array[i]=atoi(argv[i+1]);
+	}
+
+	int first, last, middle, n, search,b;
+
+	printf("Enter value to find\n");
+	scanf("%d", &search);
+
+	first = 0;
+	last = argc - 2;
+
+	b=binarySearch(array,first,last,search);
+	if(b==-1)
+		printf("Element not found");
+
+	else
+		printf("Element found at: %d",b);
+
+	return 0;
 }
- void binarySearch(int a[],int f,int l,int m,int s){
-   while (f <= l) {
-	 if (a[m] == s) {
-         printf("%d found at location %d.\n", s, m+1);
-         break;}
-      if (a[m] < s)
-         f = m + 1;    
-      else
-         l = m - 1;
- 
-      m = (f + l)/2;
-   }
-   if (f > l)
-      printf("Not found!");  
+int binarySearch(int a[],int f,int l,int s){
+	if (f > l) 
+		return -1;
+	int m=f+(l-f)/2;
+	if (a[m] == s) {
+		return m;
+	}
+	if (a[m] < s) 
+		return binarySearch(a,m+1,l,s);   
+	return binarySearch(a,f,m-1,s);
+
 }
